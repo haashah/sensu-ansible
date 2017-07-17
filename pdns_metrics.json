@@ -1,0 +1,14 @@
+{
+  "checks": {
+    "pdns_metrics": {
+      "type": "metric",
+      "command": "metrics_pdns.rb",
+      "subscribers": [
+        "webservers"
+      ],
+      "interval": 10,
+      "handler": "debug"
+    }
+  }
+}
+
