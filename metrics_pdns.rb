@@ -8,7 +8,7 @@ def output(*args)
     if args[2].nil?
       args[2] = Time.now.to_i
     end
-    puts " Hello SafeDNS-US-#{`hostname -f`.chomp}-- #{args[0..2].join("\s")}"
+    puts "SafeDNS-US-#{`hostname -f`.chomp}-- #{args[0..2].join("\s")}"
   end
 end
    
