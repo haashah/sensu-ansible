@@ -13,16 +13,16 @@ def output(*args)
 end
    
 # dump powerdns statistics using rec control
-system "sudo rec_control get-all > tmp.txt"
+system "sudo rec_control get-all > /tmp/tmp_dump.txt"
 
 if $?.exitstatus > 0
   puts "failed to dump pdns statistics. check pdns process is running!"
   exit 2
 end
 
-File.readlines('tmp.txt').each do |line|
+File.readlines('/tmp/tmp_dump.txt').each do |line|
   output line.split()[0], line.split()[1]
 end
 
 # time to cleanup dump file
-system "sudo rm -rf tmp.txt"
+system "sudo rm -rf /tmp/tmp_dump.txt"

@@ -3,10 +3,8 @@
     "pdns_metrics": {
       "type": "metric",
       "command": "metrics_pdns.rb",
-      "subscribers": [
-        "webservers"
-      ],
-      "interval": 10,
+      "standalone": "true",
+      "interval": 60,
       "handler": "debug"
     }
   }
