@@ -2,6 +2,7 @@
 
 - name: Install and configure pdns metrics check in sensu clients
   hosts: hostvirtual
+  gather_facts: False
   tasks:
    #- name: Install dependencies 
    #  yum:

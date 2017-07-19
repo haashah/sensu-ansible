@@ -3,7 +3,7 @@
     "pdns_metrics": {
       "type": "metric",
       "command": "metrics_pdns.rb",
-      "standalone": "true",
+      "standalone": true,
       "interval": 60,
       "handler": "debug"
     }
