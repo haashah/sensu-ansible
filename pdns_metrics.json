@@ -5,7 +5,7 @@
       "command": "metrics_pdns.rb",
       "standalone": true,
       "interval": 60,
-      "handler": "debug"
+      "handler": "graphite-plain"
     }
   }
 }

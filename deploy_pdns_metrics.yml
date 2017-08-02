@@ -15,19 +15,24 @@
    #    clone: yes
    - name: copy ruby script to hosts
      copy: 
-       src: /home/hammad/sensu-scripts/metrics_pdns.rb
+       src: /home/hammad/sensu/sensu-scripts/metrics_pdns.rb
        dest: /opt/sensu/embedded/bin/metrics_pdns.rb
        owner: root
        group: root
        mode: "0755" 
+     notify:
+       - restart sensu-client
    - name: copy check file to hosts
      copy:
-       src: /home/hammad/sensu-scripts/pdns_metrics.json
+       src: /home/hammad/sensu/sensu-scripts/pdns_metrics.json
        dest: /etc/sensu/conf.d/pdns_metrics.json
        owner: root
        group: root
        mode: "u=rw,g=r,o=r"
-   - name: restart sensu-client service on hosts
-     service:
-       name: sensu-client
-       state: restarted
+     notify:
+       - restart sensu-client
+  handlers:
+    - name: restart sensu-client
+      service:
+        name: sensu-client
+        state: restarted
