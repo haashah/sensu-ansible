@@ -1,0 +1,12 @@
+{
+  "checks": {
+    "memory_metrics": {
+      "type": "metric",
+      "command": "metrics-memory.rb",
+      "standalone": true,
+      "handler": "graphite-plain",
+      "output_format" : "graphite_plaintext",
+      "interval": 60
+    }
+  }
+}

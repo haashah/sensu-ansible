@@ -1,0 +1,12 @@
+{
+  "checks": {
+    "cpu_metrics": {
+      "type": "metric",
+      "command": "metrics-cpu-pcnt-usage.rb",
+      "standalone": true,
+      "interval": 60,
+      "handler": "graphite-plain",
+      "output_format" : "graphite_plaintext"
+    }
+  }
+}

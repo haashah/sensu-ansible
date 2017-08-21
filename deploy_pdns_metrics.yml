@@ -24,7 +24,7 @@
        - restart sensu-client
    - name: copy check file to hosts
      copy:
-       src: /home/hammad/sensu/sensu-scripts/pdns_metrics.json
+       src: /home/hammad/sensu/sensu-scripts/config/pdns_metrics.json
        dest: /etc/sensu/conf.d/pdns_metrics.json
        owner: root
        group: root
