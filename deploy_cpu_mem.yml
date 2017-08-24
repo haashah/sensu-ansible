@@ -17,13 +17,25 @@
 #
 
 - name: Configure and start sensu cpu and memory checks on client servers
-  hosts: host7, host8, host9, host10, host11, host12, host13
+  hosts: localhost
   gather_facts: false
   serial: 1
   tasks:
-    - name: get hostname
-      command: hostname -f
-      register: host
+    - name: Get hostname of remote server
+      command: hostname
+      register: server_name
+    - name: add hostname argument to cpu script
+      lineinfile:
+        path: config/cpu_metrics.json
+        regexp: 'command'
+        line: '      "command": "metrics-cpu-pcnt-usage.rb --scheme PDNS.{{ server_name.stdout }}.cpu",'
+      delegate_to: localhost
+    - name: add hostname argument to memory script
+      lineinfile:
+        path: config/memory_metrics.json
+        regexp: 'command'
+        line: '      "command": "metrics-memory.rb --scheme PDNS.{{ server_name.stdout }}.mem",'
+      delegate_to: localhost
     - name: copy cpu config to server
       copy:
         src:  config/cpu_metrics.json
@@ -31,24 +43,19 @@
         owner: root
         group: root
         mode: "u=rw,g=r,o=r"
-    - name: copy memory config file to server
+      notify:
+        - restart sensu-client service
+    - name: copy memory config file to remote server
       copy:
         src:  config/memory_metrics.json
         dest: /etc/sensu/conf.d/memory_metrics.json
         owner: root
         group: root
         mode: "u=rw,g=r,o=r"
-    - name: add hostname argument to cpu script
-      lineinfile:
-        path: /etc/sensu/conf.d/cpu_metrics.json
-        regexp: 'command'
-        line: '      "command": "metrics-cpu-pcnt-usage.rb --scheme PDNS.{{ host.stdout }}.cpu",'
-    - name: add hostname argument to memory script
-      lineinfile:
-        path: /etc/sensu/conf.d/memory_metrics.json
-        regexp: 'command'
-        line: '      "command": "metrics-memory.rb --scheme PDNS.{{ host.stdout }}.mem",'
-    - name: Restart sensu-client service
+      notify:
+        - restart sensu-client service
+  handlers:
+    - name: restart sensu-client service
       service:
         name: sensu-client
         state: restarted

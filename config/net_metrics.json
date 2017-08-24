@@ -1,0 +1,12 @@
+{
+  "checks": {
+    "net_metrics": {
+       "type": "metric",
+       "command": "metrics-interface.rb --scheme PDNS.hammad-VirtualBox.net",
+       "standalone": true,
+       "interval": 60,
+       "handler": "graphite-plain",
+       "output-format": "graphite_plaintext"
+       }
+    }
+}

@@ -4,27 +4,18 @@
   hosts: hostvirtual
   gather_facts: False
   tasks:
-   #- name: Install dependencies 
-   #  yum:
-   #    name: git
-   #    state: present
-   #- name: clone required files 
-   #  git:
-   #    repo: 'https://github.com/haashah/sensu-scripts.git'
-   #    dest: /opt/pdns_metrics
-   #    clone: yes
    - name: copy ruby script to hosts
-     copy: 
-       src: /home/hammad/sensu/sensu-scripts/metrics_pdns.rb
+     copy:
+       src: metrics_pdns.rb
        dest: /opt/sensu/embedded/bin/metrics_pdns.rb
        owner: root
        group: root
-       mode: "0755" 
+       mode: "0755"
      notify:
        - restart sensu-client
    - name: copy check file to hosts
      copy:
-       src: /home/hammad/sensu/sensu-scripts/config/pdns_metrics.json
+       src: pdns_metrics.json
        dest: /etc/sensu/conf.d/pdns_metrics.json
        owner: root
        group: root

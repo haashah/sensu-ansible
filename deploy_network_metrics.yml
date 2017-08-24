@@ -1,0 +1,49 @@
+# #   _
+#
+#__            _ _     _
+#  / _ \          (_) |   | |
+# / /_\ \_ __  ___ _| |__ | | ___
+# |  _  | '_ \/ __| | '_ \| |/ _ \
+# | | | | | | \__ \ | |_) | |  __/
+# \_| |_/_| |_|___/_|_.__/|_|\___|
+#
+#
+
+#  Ansible playbook to setup network sensu checks on client servers.
+#  This script assumes network sensu plugin
+#  (https://github.com/sensu-plugins/sensu-plugins-network-checks)
+#  is already installed on servers.
+
+# Owner: Hammad Shah
+# 2017
+#
+
+- name: Configure sensu network plugin on client servers
+  hosts: localhost 
+  gather_facts: false
+  serial: 1
+  tasks:
+    - name: get the server name to insert in memory-check config file
+      command: hostname
+      register: server_name
+    - name: modify the local check json file
+      lineinfile:
+        path: config/net_metrics.json
+        regexp: 'command'
+        line: '       "command": "metrics-interface.rb --scheme PDNS.{{ server_name.stdout }}.net",'
+      delegate_to: localhost
+    - name: copy check file to client server
+      copy:
+        src: config/net_metrics.json
+        dest: /etc/sensu/conf.d/
+        owner: root
+        group: root
+        mode: "u=rw,g=r,o=r"
+      notify:
+        - restart sensu-client service
+  handlers:
+    - name: restart sensu-client service
+      service:
+          name: sensu-client
+          state: restarted
+
